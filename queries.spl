@@ -1,0 +1,32 @@
+# Run each query individually with All time selected.
+
+# GET events; inspect clientip and status through the field sidebar.
+GET
+
+# Missing resources.
+get status=404
+
+# Missing resources requested by one client.
+get status=404 clientip="87.194.216.51"
+
+# Filename investigation; inspect clientip through the field sidebar.
+passwords.pdf
+
+# Purchase category distributions.
+sourcetype=access_* status=200 action=purchase | top categoryId
+
+sourcetype=access_* status!=200 action=purchase | top categoryId
+
+# User-agent ranking.
+get | top limit=20 useragent
+
+# Browser keyword counts; matches overlap.
+sourcetype=access_* | chart count(eval(searchmatch("Safari"))) AS Safari, count(eval(searchmatch("Chrome"))) AS Chrome, count(eval(searchmatch("Mozilla"))) AS Mozilla
+
+# Product purchase requests.
+post action=purchase | top limit=20 productId
+
+# Product/category mappings.
+get cart.do productId="WC-SH-G04" | top categoryId
+
+get cart.do categoryId="STRATEGY" | top productId
